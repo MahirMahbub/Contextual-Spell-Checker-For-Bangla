@@ -11,7 +11,6 @@ def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
-
 def generate_json():
     import json
     dict = {
@@ -31,10 +30,11 @@ def generate_json():
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
-    sentence = "নাম প্রকাশ না করার শর্তে এক প্রত্যক্ষদর্শী ওই ঘটনার বর্ণন দেন".split(" ")
+    sentence = "পুলিশ আসা আগে ডাকাত পালিয়ে গোছে".split(" ")
     print(sentence)
     # print(BanglaBertMaskedModelController().prediction(["আমি", "বাংলায়", "<mask>", "গাই"]))
     # print(BanglaBertNERModelController().prediction(["আমি", "বাংলায়", "গাই"]))
-    print(SpellChecker().prediction(sentence))
+    print(SpellChecker().prediction(sentence=sentence, k=100, levenshtein_ratio=0.5))
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
