@@ -41,8 +41,7 @@ class SpellChecker(object):
                 prediction_word: str = sentence[index]
                 for masked_word_prediction in masked_prediction:
                     ratio = levenshtein_ratio_and_distance(s=masked_word_prediction.prediction,
-                                                           t=sentence[index],
-                                                           ratio_calc=True)
+                                                           t=sentence[index])
                     if ratio > max_ratio and ratio > levenshtein_ratio:
                         prediction_word = masked_word_prediction.prediction
                         max_ratio = ratio

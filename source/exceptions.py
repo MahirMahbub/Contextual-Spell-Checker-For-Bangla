@@ -15,9 +15,9 @@ class MaskNotFoundError(Exception):
         :type message: str
             (default is "Mask label [Mask]/<mask> not found in sentence")
         """
-        self.masked_sentence= masked_sentence
+        self.masked_sentence = masked_sentence
         self.message = message
         super().__init__(self.message)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.masked_sentence} -> {self.message}'

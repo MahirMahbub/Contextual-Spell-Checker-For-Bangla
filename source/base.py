@@ -1,12 +1,15 @@
 import importlib
 import os
 import traceback
-from typing import List, Optional, Any
+from typing import List, Optional, Any, TypeVar
 
+Interface_ = TypeVar('Interface_', bound='Interface')
+Singleton_ = TypeVar('Singleton_', bound='Singleton')
 
 class Interface(type):
 
     def __init__(self, name, bases, namespace):
+        super().__init__(name, bases, namespace)
         for base in bases:
             must_implement = getattr(base, 'abstract_methods', [])
             class_methods = getattr(self, 'all_methods', [])
@@ -19,16 +22,16 @@ class Interface(type):
                                base_class=base.__name__)
                     raise TypeError(err_str)
 
-    def __new__(metaclass, name, bases, namespace):
+    def __new__(metaclass, name, bases, namespace) -> Interface_:
         namespace['abstract_methods'] = Interface._get_abstract_methods(namespace)
         namespace['all_methods'] = Interface._get_all_methods(namespace)
         cls = super().__new__(metaclass, name, bases, namespace)
         return cls
 
-    def _get_abstract_methods(namespace):
+    def _get_abstract_methods(namespace) -> List[Any]:
         return [name for name, val in namespace.items() if callable(val) and getattr(val, '__isabstract__', False)]
 
-    def _get_all_methods(namespace):
+    def _get_all_methods(namespace) -> List[Any]:
         return [name for name, val in namespace.items() if callable(val)]
 
 
@@ -51,7 +54,7 @@ class Singleton:
     def __init__(self, decorated):
         self._decorated = decorated
 
-    def instance(self):
+    def instance(self) -> Singleton_:
         """
         Returns the singleton instance. Upon its first call, it creates a
         new instance of the decorated class and calls its `__init__` method.
@@ -64,11 +67,11 @@ class Singleton:
             self._instance = self._decorated()
             return self._instance
 
-    def __call__(self):
+    def __call__(self) -> Singleton_:
         # raise TypeError('Singletons must be accessed through `instance()`.')
         return self.instance()
 
-    def __instancecheck__(self, inst):
+    def __instancecheck__(self, inst) -> bool:
         return isinstance(inst, self._decorated)
 
 

@@ -55,4 +55,3 @@ class BanglaBertNERModelController(BaseNERModelControllerInterface):
                 word_classification_list.append([token, self.__model.config.id2label[prediction]])
         return [NERModelPrediction(word=pred[0], label=pred[1]) for pred in
                 word_classification_list[1:len(word_classification_list) - 1]]
-        # return word_classification_list[1:len(word_classification_list)-1]
