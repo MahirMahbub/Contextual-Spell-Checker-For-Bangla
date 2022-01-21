@@ -1,6 +1,7 @@
-def abstractfunc(func):
-    func.__isabstract__ = True
-    return func
+import importlib
+import os
+import traceback
+from typing import List, Optional, Any
 
 
 class Interface(type):
@@ -69,3 +70,61 @@ class Singleton:
 
     def __instancecheck__(self, inst):
         return isinstance(inst, self._decorated)
+
+
+def abstract(func):
+    func.__isabstract__ = True
+    return func
+
+
+def create_instance(class_str: str, arguments: Optional[List[str]] = "") -> Any:
+    """
+    Create a class instance from a full path to a class constructor
+    :param arguments: Optional List of arguments as string for the class's __init__() method
+    :param class_str: module name plus '.' plus class name. For example, "a.b.ClassB.ClassB('World')"
+    :return: an instance of the class specified.
+    """
+
+    class_str += "(" + ",".join(arguments) + ")"
+    # print(class_str)
+    try:
+        if "(" in class_str:
+            full_class_name, args = class_name = class_str.rsplit('(', 1)
+            args = '(' + args
+        else:
+            full_class_name = class_str
+            args = ()
+        module_path, _, class_name = full_class_name.rpartition('.')
+        mod = importlib.import_module(module_path)
+        klazz = getattr(mod, class_name)
+        alias = class_name + "Alias"
+        instance = eval(alias + args, {alias: klazz})
+        return instance
+    except (ImportError, AttributeError) as e:
+        raise ImportError(class_str)
+
+
+def generate_json() -> None:
+    import json
+    dict = {
+        "MLM": {
+            "model": "bangla-bert-base",
+            "controller": "BanglaBertMaskedModelController"
+        },
+        "NER": {
+            "model": "mbert-bengali-ner",
+            "controller": "BanglaBertNERModelController"
+        }
+    }
+    with open('config.json', 'w') as f:
+        json.dump(dict, f)
+
+
+def exit_on_temp_fail() -> None:
+    traceback.print_exc()
+    os._exit(os.EX_TEMPFAIL)
+
+
+def exit_on_data_err() -> None:
+    traceback.print_exc()
+    os._exit(os.EX_DATAERR)

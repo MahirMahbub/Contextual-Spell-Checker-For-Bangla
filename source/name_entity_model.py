@@ -1,10 +1,9 @@
-from typing import List, Tuple, Union, Dict
+from typing import List, Tuple
 
 import torch
-from transformers import AutoModelForTokenClassification, AutoTokenizer, pipeline, Pipeline, TokenClassificationPipeline
-from transformers.pipelines import AggregationStrategy
+from transformers import AutoModelForTokenClassification, AutoTokenizer
 
-from source.base import abstractfunc, Interface
+from source.base import abstract, Interface
 from source.data_classes import NERModelPrediction
 
 
@@ -12,7 +11,7 @@ class BaseNERModelControllerInterface(metaclass=Interface):
     """Interface for masked model
     """
 
-    @abstractfunc
+    @abstract
     def prediction(self, sentence_list: List[str]) -> None:
         """
         :param sentence_list: List of sequential word of a sentence.
@@ -41,27 +40,15 @@ class BanglaBertNERModelController(BaseNERModelControllerInterface):
         """
         :param masked_sentence_list: List of sequential word of a masked sentence.
         :type masked_sentence_list: List[str]
-        :return word_classification_list: List[NERModelPrediction]
+        :rtype List[NERModelPrediction]
         """
-        # predictor: TokenClassificationPipeline = TokenClassificationPipeline(model=self.__model, tokenizer=self.__tokenizer)
-        # predictions: List[Union[List[Dict], Dict]] = predictor(" ".join(masked_sentence_list),
-        #                                                        aggregation_strategy="max")
-        # # print(predictions)
-        # print(predictor.aggregate_words(entities=predictions,
-        #                                 aggregation_strategy=AggregationStrategy.MAX
-        #                                 ))
         inputs = self.__tokenizer(" ".join(masked_sentence_list), return_tensors="pt")
         tokens = inputs.tokens()
-
         outputs = self.__model(**inputs).logits
         predictions = torch.argmax(outputs, dim=2)
-        # print(predictions)
         word_classification_list = []
         for token, prediction in zip(tokens, predictions[0].numpy()):
-            # print(token, self.__model.config.id2label[prediction])
-            # print(word_classification_list)
             if token[0:2] == "##":
-                #  and word_classification_list[-1][1]==self.__model.config.id2label[prediction]
                 word_classification_list[-1][0] = word_classification_list[-1][0] + token[2:]
                 word_classification_list[-1][1] = self.__model.config.id2label[prediction]
             else:

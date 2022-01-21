@@ -1,0 +1,10 @@
+{
+  "MLM": {
+    "model": "bangla-bert-base",
+    "controller": "BanglaBertMaskedModelController"
+  },
+  "NER": {
+    "model": "mbert-bengali-ner",
+    "controller": "BanglaBertNERModelController"
+  }
+}

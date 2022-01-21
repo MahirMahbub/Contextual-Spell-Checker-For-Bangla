@@ -1,11 +1,8 @@
-from typing import List, Dict, Tuple, Union, Any, Generator, Optional
+from typing import List, Dict, Tuple, Union, Optional
 
-from torch.utils.data.dataset import T_co
-from transformers.pipelines.base import PipelineIterator
-
-from source.base import Interface, abstractfunc, Singleton
 from transformers import BertForMaskedLM, BertTokenizer, pipeline, Pipeline
 
+from source.base import Interface, abstract, Singleton
 from source.data_classes import MaskedModelPrediction
 from source.exceptions import MaskNotFoundError
 
@@ -14,7 +11,7 @@ class BaseMaskedModelControllerInterface(metaclass=Interface):
     """Interface for masked model
     """
 
-    @abstractfunc
+    @abstract
     def prediction(self, masked_sentence_list: List[str], k: Optional[int] = 10) -> None:
         """
         :param masked_sentence_list: List of sequential word of a masked sentence.
@@ -49,7 +46,6 @@ class BanglaBertMaskedModelController(BaseMaskedModelControllerInterface):
         :param k: Number of prediction
         :type k: Optional[int]
             (default is 10)
-        :return prediction
         """
         predictor: Pipeline = pipeline('fill-mask', model=self.__model, tokenizer=self.__tokenizer)
 
