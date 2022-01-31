@@ -12,3 +12,8 @@ class MaskedModelPrediction:
 class NERModelPrediction:
     word: str
     label: str
+
+
+@dataclass
+class DatasetWordDetails(NERModelPrediction):
+    error_word: str

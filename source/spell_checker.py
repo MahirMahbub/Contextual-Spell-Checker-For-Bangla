@@ -1,19 +1,13 @@
-import json
-from typing import List, Optional, Dict, Any, Union
+from typing import List, Optional
 
-from source.base import create_instance, exit_on_temp_fail, exit_on_data_err
-from source.custom_annotation import ModelControllerOptions
+from source.predictor_controller import NERPredictor, MaskedPredictor
 from source.data_classes import MaskedModelPrediction, NERModelPrediction
 from source.levenshtein_ratio_and_distance import Levenshtein
-from source.masked_model import BanglaBertMaskedModelController
-from source.name_entity_model import BanglaBertNERModelController
 
 
-class SpellChecker(object):
+class SpellChecker(NERPredictor, MaskedPredictor):
     def __init__(self):
-        self.config: Dict[str, ModelControllerOptions] = self.__read_config()
-        self.masked_controller_object = self.__create_masked_controller_object(self.config)
-        self.ner_controller_object = self.__create_ner_controller_object(self.config)
+        super(SpellChecker, self).__init__()
         self.levenshtein_object = Levenshtein()
 
     def prediction(self, sentence: List[str], k: Optional[int] = 10,
@@ -31,7 +25,7 @@ class SpellChecker(object):
         :rtype List[str]
         """
 
-        ner_prediction: List[NERModelPrediction] = self.__get_ner_prediction(sentence)
+        ner_prediction: List[NERModelPrediction] = self._get_ner_prediction(sentence)
         masked_sentences: List[List[str]] = self.__create_mask(sentence)
 
         for index, masked_sentence in enumerate(masked_sentences):
@@ -63,7 +57,7 @@ class SpellChecker(object):
                            masked_sentence: List[str],
                            k: int) -> str:
         max_ratio: float = 0.0
-        word_prediction_object_list: List[MaskedModelPrediction] = self.__get_masked_prediction(k, masked_sentence)
+        word_prediction_object_list: List[MaskedModelPrediction] = self._get_masked_prediction(k, masked_sentence)
         for word_prediction_object in word_prediction_object_list:
             predicted_word: str = word_prediction_object.prediction
 
@@ -95,35 +89,6 @@ class SpellChecker(object):
             t=word)
         return ratio
 
-    def __get_masked_prediction(self, k: int, masked_sentence: List[str]) -> List[MaskedModelPrediction]:
-
-        masked_prediction: List[MaskedModelPrediction] = self.masked_controller_object.prediction(
-            masked_sentence_list=masked_sentence, k=k)
-        return masked_prediction
-
-    def __get_ner_prediction(self, sentence: List[str]) -> List[NERModelPrediction]:
-        ner_prediction: List[NERModelPrediction] = self.ner_controller_object.prediction(sentence)
-        return ner_prediction
-
-    @staticmethod
-    def __create_ner_controller_object(config: Dict[str, ModelControllerOptions]) -> BanglaBertNERModelController:
-        ner_controller_object: Union[BanglaBertNERModelController, Any] = None
-        try:
-            ner_controller_object = create_instance("source.name_entity_model." + config["NER"]["controller"])
-        except ImportError as imp_e:
-            exit_on_temp_fail()
-        return ner_controller_object
-
-    @staticmethod
-    def __create_masked_controller_object(config: Dict[str, ModelControllerOptions]) -> BanglaBertMaskedModelController:
-        masked_controller_object: Union[BanglaBertMaskedModelController, Any] = None
-        try:
-            masked_controller_object = create_instance(
-                "source.masked_model." + config["MLM"]["controller"])
-        except ImportError as imp_e:
-            exit_on_temp_fail()
-        return masked_controller_object
-
     @staticmethod
     def __create_mask(sentence: List[str]) -> List[List[str]]:
         masked_sentences: List = []
@@ -132,12 +97,3 @@ class SpellChecker(object):
             masked[i] = "[MASK]"
             masked_sentences.append(masked)
         return masked_sentences
-
-    @staticmethod
-    def __read_config() -> Dict[str, ModelControllerOptions]:
-        try:
-            with open('config.json') as json_file:
-                data: Dict[str, Any] = json.load(json_file)
-        except FileNotFoundError as fe:
-            exit_on_data_err()
-        return data
