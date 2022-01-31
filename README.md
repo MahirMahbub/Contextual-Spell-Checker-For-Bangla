@@ -18,11 +18,11 @@
 ```
 from source.spell_checker import SpellChecker
 sentence = "নাম প্রকা না করার শর্তে এক প্রত্যক্ষদর্শী ওই ঘটনার বর্ণন দেন".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=100, levenshtein_ratio=0.5)))
+print(SpellChecker().prediction(sentence=sentence, k=100, levenshtein_ratio_threshold=0.5)))
 >>> ['নাম', 'প্রকাশ', 'না', 'করার', 'শর্তে', 'এক', 'প্রত্যক্ষদর্শী', 'ওই', 'ঘটনার', 'বর্ণনা', 'দেন']
 
 sentence = "পুলিশ আসা আগে ডাকাত পালিয়ে গোছে".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=100, levenshtein_ratio=0.5)))
+print(SpellChecker().prediction(sentence=sentence, k=100, levenshtein_ratio_threshold=0.5)))
 >>> ['পুলিশ', 'আসার', 'আগে', 'ডাকাত', 'পালিয়ে', 'গেছে']
 
 ```
