@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -16,4 +17,7 @@ class NERModelPrediction:
 
 @dataclass
 class DatasetWordDetails(NERModelPrediction):
-    error_word: str
+    error_word: Optional[str] = None
+
+    def __iter__(self):
+        return iter([self.word, self.error_word, self.label])

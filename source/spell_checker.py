@@ -1,14 +1,16 @@
 from typing import List, Optional
 
-from source.predictor_controller import NERPredictor, MaskedPredictor
 from source.data_classes import MaskedModelPrediction, NERModelPrediction
 from source.levenshtein_ratio_and_distance import Levenshtein
+from source.predictor_controller import NERPredictor, MaskedPredictor
 
 
 class SpellChecker(NERPredictor, MaskedPredictor):
-    def __init__(self):
-        super(SpellChecker, self).__init__()
-        self.levenshtein_object = Levenshtein()
+    def __init__(self, **kwargs):
+        # super(SpellChecker, self).__init__()
+        NERPredictor.__init__(self, **kwargs)
+        MaskedPredictor.__init__(self,  **kwargs)
+        self.__levenshtein_object = Levenshtein()
 
     def prediction(self, sentence: List[str], k: Optional[int] = 10,
                    levenshtein_ratio_threshold: Optional[float] = 0.5) -> List[str]:
@@ -25,21 +27,21 @@ class SpellChecker(NERPredictor, MaskedPredictor):
         :rtype List[str]
         """
 
-        ner_prediction: List[NERModelPrediction] = self._get_ner_prediction(sentence)
-        masked_sentences: List[List[str]] = self.__create_mask(sentence)
+        __ner_prediction: List[NERModelPrediction] = self._get_ner_prediction(sentence)
+        __masked_sentences: List[List[str]] = self.__create_mask(sentence)
 
-        for index, masked_sentence in enumerate(masked_sentences):
-            if not self.__is_name_entity(ner_prediction, index):
-                final_predicted_word: str = self.__get_word_from_sentence_list(index, sentence)
-                main_word: str = self.__get_word_from_sentence_list(index, sentence)
+        for index, masked_sentence in enumerate(__masked_sentences):
+            if not self.__is_name_entity(__ner_prediction, index):
+                __final_predicted_word: str = self.__get_word_from_sentence_list(index, sentence)
+                __main_word: str = self.__get_word_from_sentence_list(index, sentence)
 
-                final_predicted_word: str = self.__get_correct_word(final_predicted_word=final_predicted_word,
-                                                                    main_word=main_word,
-                                                                    ratio_threshold=levenshtein_ratio_threshold,
-                                                                    masked_sentence=masked_sentence,
-                                                                    k=k)
+                __final_predicted_word: str = self.__get_correct_word(final_predicted_word=__final_predicted_word,
+                                                                      main_word=__main_word,
+                                                                      ratio_threshold=levenshtein_ratio_threshold,
+                                                                      masked_sentence=masked_sentence,
+                                                                      k=k)
 
-                sentence[index] = final_predicted_word
+                sentence[index] = __final_predicted_word
         return sentence
 
     @staticmethod
@@ -84,7 +86,7 @@ class SpellChecker(NERPredictor, MaskedPredictor):
 
     def __get_levenshtein_ratio(self, word: str, predicted_word: str) -> float:
 
-        ratio: float = self.levenshtein_object.get_levenshtein_ratio_and_distance(
+        ratio: float = self.__levenshtein_object.get_levenshtein_ratio_and_distance(
             s=predicted_word,
             t=word)
         return ratio
