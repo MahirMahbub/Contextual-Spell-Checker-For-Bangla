@@ -65,7 +65,7 @@ class BanglaBertMaskedModelController(BaseMaskedModelControllerInterface):
                 # Prediction post processing
                 predictions: List[MaskedModelPrediction] = [MaskedModelPrediction(score=prediction.get("score"),
                                                                                   prediction=prediction.get(
-                                                                                      'token_str'),
+                                                                                      'token_str').replace(" ", ""),
                                                                                   sentence=prediction.get('sequence')
                                                                                   ) for prediction in predictions]
         except ValueError as ve:

@@ -9,6 +9,6 @@ from source.spell_checker import SpellChecker
 if __name__ == '__main__':
     sentence = "পুলিশ আসা আগে ডাকাত পালিয়ে গোছে".split(" ")
     print(sentence)
-    print(SpellChecker().prediction(sentence=sentence, k=100, levenshtein_ratio=0.5))
+    print(SpellChecker().prediction(sentence=sentence, k=100, levenshtein_ratio_threshold=0.5))
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
