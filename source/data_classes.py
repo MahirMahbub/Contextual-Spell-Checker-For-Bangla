@@ -18,6 +18,3 @@ class NERModelPrediction:
 @dataclass
 class DatasetWordDetails(NERModelPrediction):
     error_word: Optional[str] = None
-
-    def __iter__(self):
-        return iter([self.word, self.error_word, self.label])
