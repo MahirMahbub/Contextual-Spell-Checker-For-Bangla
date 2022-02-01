@@ -210,7 +210,7 @@ class DataGeneration(object):
         return self.insertion_word()
 
 
-data_generation_object = DataGeneration()
-#
-# # print(data_generation_object.get_error_word("বহিঃরঙ্গণ"))
-print(data_generation_object.get_error_word("গেছে"))
+# data_generation_object = DataGeneration()
+# #
+# # # print(data_generation_object.get_error_word("বহিঃরঙ্গণ"))
+# print(data_generation_object.get_error_word("গেছে"))
