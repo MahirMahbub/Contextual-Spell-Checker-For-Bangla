@@ -127,7 +127,8 @@ class SpellChecker(NERPredictor, MaskedPredictor):
             if self.__is_eligible_predicted_word(current_ratio=ratio,
                                                  max_ratio=max_ratio,
                                                  ratio_threshold=ratio_threshold) \
-                    and self.__is_length_diff_less_than_equal_three(word, predicted_word_):
+                    and self.__is_length_diff_less_than_equal_three(word, predicted_word_)\
+                    and self.__is_vocab_in_tokenizer(predicted_word_):
                 final_predicted_word_ = predicted_word_
                 max_ratio = ratio
         return final_predicted_word_

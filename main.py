@@ -16,17 +16,17 @@ from source.text_io import TextIO
 if __name__ == '__main__':
     # sentence = "পুলিশ আসা আগে ডাকাত পালিয়ে গোছে".split(" ")
     # sentence = "আগুনে কমক্ষে ৩৮ জন দগ্ধ হয়েছ".split(" ")
-    # sentence = "একই এলাকা সোলতা আহমেদের ছেলে আব্দুর রহমান (৩০)".split(" ")
+    sentence = "এক এলাকা সোলতা আহমেদের ছে আব্দুর রহমান (৩০)".split(" ")
     # sentence = "এখান লাঠিয়াল, ঢুলি, পালকিবাহক বা পেয়াদাগিরির পেশ বেছে নিতে হয়".split(" ")
     # sentence = "২. ভারতের ন্যায় বিড়ি শিল্পকে কুটির শিল্প ঘোষণা করা". split(" ")
     # print(sentence)
     # sentence = ['পুলিশ', 'আসার', 'আগে', 'ডাকাত', 'পালিয়ে', 'গেছে']
     # sentence = ['আমি','বাংলায়' , 'জ্ঞান', 'গাই']
-    # print(SpellChecker().prediction(sentence=sentence, k=50, levenshtein_ratio_threshold=0.5))
+    print(SpellChecker().prediction(sentence=sentence, k=50, levenshtein_ratio_threshold=0.5))
 
     # #
-    ner_word_track = TestDatasetCreationHandler().make_dataset(path=r"data/output/ittefaq.txt", length=5000)
-    JsonIO.write_json(path="data/output/spell_test.json", object_=ner_word_track)
+    # ner_word_track = TestDatasetCreationHandler().make_dataset(path=r"data/output/ittefaq.txt", length=5000)
+    # JsonIO.write_json(path="data/output/spell_test.json", object_=ner_word_track)
     # print(JsonIO.read_json(path="data/output/spell_test.json"))
     # print(ner_word_track)
     # print(json.loads(ner_word_track))

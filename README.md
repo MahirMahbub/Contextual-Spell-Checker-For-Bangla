@@ -1,12 +1,14 @@
-# Contextual spell checker for bangla
+# Auto Progressive Contextual spell checker for bangla
 
-## Automatic Context-Sensitive Spelling Correction for Bangla Text Using BERT and Levenshtein Distance.
+## Automatic Progressive Context-Sensitive Spelling Correction for Bangla Text Using BERT and Levenshtein Distance.
 
 - Bert Masked Model (Added), Other model support(For example, LSTM/GRU based Masked Prediction model) will be added. 
 
 - Bert NER Model (Added)
 - Levenshtein Distance (Added)
-- Dictionary Look up (Yet to add)
+- Dictionary Look up (Yet to add, but added word piece vocab look up) 
+- Progressive spell checking
+- New constraints added while checking the spelling
 
 ## Instruction
 - Download a Bert Masked Model in "model/bangla-bert-base" (Recommeded https://huggingface.co/sagorsarker/bangla-bert-base)
@@ -17,12 +19,16 @@
 
 ```
 from source.spell_checker import SpellChecker
-sentence = "নাম প্রকা না করার শর্তে এক প্রত্যক্ষদর্শী ওই ঘটনার বর্ণন দেন".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=100, levenshtein_ratio_threshold=0.5)))
->>> ['নাম', 'প্রকাশ', 'না', 'করার', 'শর্তে', 'এক', 'প্রত্যক্ষদর্শী', 'ওই', 'ঘটনার', 'বর্ণনা', 'দেন']
+sentence = "আগুনে কমক্ষে ৩৮ জন দগ্ধ হয়েছ".split(" ")
+print(SpellChecker().prediction(sentence=sentence, k=50, levenshtein_ratio_threshold=0.5)))
+>>> ['আগুনে', 'কমপক্ষে', '৩৮', 'জন', 'দগ্ধ', 'হয়েছে']
 
-sentence = "পুলিশ আসা আগে ডাকাত পালিয়ে গোছে".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=100, levenshtein_ratio_threshold=0.5)))
->>> ['পুলিশ', 'আসার', 'আগে', 'ডাকাত', 'পালিয়ে', 'গেছে']
+sentence = "এখান লাঠিয়াল, ঢুলি, পালকিবাহক বা পেয়াদাগিরির পেশ বেছে নিতে হয়".split(" ")
+print(SpellChecker().prediction(sentence=sentence, k=50, levenshtein_ratio_threshold=0.5)))
+>>> ['এখানে', 'লাঠিয়াল,', 'ঢুলি,', 'পালকিবাহক', 'বা', 'পেয়াদাগিরির', 'পেশা', 'বেছে', 'নিন', 'হয়']
+
+sentence = "এক এলাকা সোলতা আহমেদের ছে আব্দুর রহমান (৩০)".split(" ")
+print(SpellChecker().prediction(sentence=sentence, k=50, levenshtein_ratio_threshold=0.5)))
+['একই', 'এলাকার', 'সোলতা', 'আহমেদের', 'ছেলে', 'আব্দুর', 'রহমান', '(৩০)']
 
 ```
