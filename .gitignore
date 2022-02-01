@@ -1,2 +1,4 @@
 /model/bangla-bert-base/*
 /model/mbert-bengali-ner/*
+/data/input/*
+/data/output/*
