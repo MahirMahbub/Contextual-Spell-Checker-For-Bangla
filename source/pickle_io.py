@@ -5,8 +5,9 @@ from typing import List, Any
 from source.base import exit_on_data_err
 
 
-class PickleReader(object):
-    def read_pickle(self, path, to_sentence_preprocess=False) -> List[Any]:
+class PickleIO(object):
+
+    def read_pickle(self, path, to_sentence_preprocess=False) -> Any:
         data: List[Any] = []
         try:
             with open(file=path, mode="rb") as json_file:
@@ -16,6 +17,11 @@ class PickleReader(object):
         if to_sentence_preprocess:
             data = self.sentence_preprocessor(data)
         return data
+
+    @staticmethod
+    def write_pickle(path, object_):
+        with open(path, 'wb') as handle:
+            pickle.dump(object_, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     @staticmethod
     def sentence_preprocessor(data) -> List[str]:
