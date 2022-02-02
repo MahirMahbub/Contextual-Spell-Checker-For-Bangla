@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import numpy as np
 from numpy import ndarray
 
@@ -5,7 +7,7 @@ from numpy import ndarray
 class Levenshtein(object):
 
     @staticmethod
-    def get_levenshtein_ratio_and_distance(s, t) -> float:
+    def get_levenshtein_ratio_and_distance(s, t) -> Tuple[float, int]:
         """ levenshtein_ratio_and_distance:
             Calculates levenshtein distance between two strings.
             If ratio_calc = True, the function computes the
@@ -43,4 +45,4 @@ class Levenshtein(object):
                                          distance[row - 1][col - 1] + cost)  # Cost of substitutions
         # Computation of the Levenshtein Distance Ratio
         ratio = ((len(s) + len(t)) - distance[row][col]) / (len(s) + len(t))
-        return ratio
+        return ratio, distance[row][col]

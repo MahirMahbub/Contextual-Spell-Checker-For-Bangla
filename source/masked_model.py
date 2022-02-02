@@ -23,7 +23,7 @@ class BaseMaskedModelControllerInterface(metaclass=Interface):
         pass
 
 
-@Singleton
+# @Singleton
 class BanglaBertMaskedModelController(BaseMaskedModelControllerInterface):
     __model: BertForMaskedLM
     __tokenizer: BertTokenizer
