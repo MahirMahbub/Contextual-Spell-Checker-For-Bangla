@@ -1,4 +1,4 @@
-# Auto Progressive Contextual spell checker for bangla
+# Auto Progressive Contextual Spell Checker For Bangla
 
 ## Automatic Progressive Context-Sensitive Spelling Correction for Bangla Text Using BERT and Levenshtein Distance.
 
