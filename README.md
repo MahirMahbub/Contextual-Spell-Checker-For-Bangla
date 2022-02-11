@@ -6,9 +6,9 @@
 
 - Bert NER Model (Added)
 - Levenshtein Distance (Added)
-- Dictionary Look up (Yet to add, but added word piece vocab look up) 
-- Progressive spell checking
-- New constraints added while checking the spelling
+- Dictionary Look up (Added)
+- Progressive spell checking with NER (Added)
+- New constraints added while checking the spelling (Added)
 
 ## Instruction
 - Download a Bert Masked Model in "model/bangla-bert-base" (Recommeded https://huggingface.co/sagorsarker/bangla-bert-base)
