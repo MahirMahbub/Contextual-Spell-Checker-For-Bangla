@@ -32,3 +32,22 @@ print(SpellChecker().prediction(sentence=sentence, k=50, levenshtein_ratio_thres
 ['একই', 'এলাকার', 'সোলতা', 'আহমেদের', 'ছেলে', 'আব্দুর', 'রহমান', '(৩০)']
 
 ```
+
+## Result
+
+Evaluation dataset in created from https://github.com/habibsifat/Algorithm-for-Bengali-Error-Dataset-Generation. 
+
+TP: Did not change the correct word / total correct word
+
+FN: Change the correct word incorrectly / total incorrect word
+
+FP: Did not change the incorrect word(Mark incorrect as correct) / total incorrect word
+
+TN: Change the incorrect word correctly / total correct word
+
+TN_PLUS: Change the incorrect word incorrectly 
+            
+| Model      | TP | FN | FP | TN | TN_PLUS |
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
+| Sagor Sarkar | 0.98366 | 0.01634| 0.67857 | 0.3214 | 0.0 |
+            
