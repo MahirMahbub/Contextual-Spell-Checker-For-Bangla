@@ -6,10 +6,13 @@ import difflib
 import json
 import pprint
 
+from gensim import corpora
+
 from source.dataset_creation import TestDatasetCreationHandler
 
 # Press the green button in the gutter to run the script.
 from source.evaluation import Evaluate
+from source.gzip_io import ReadGzipFiles
 from source.json_io import JsonIO
 from source.pickle_io import PickleIO
 from source.spell_checker import SpellChecker
@@ -52,5 +55,39 @@ if __name__ == '__main__':
     # TextIO.write_text(r"data/output/ittefaq.txt", sen_list)
     # print(TextIO.read_text(r"data/output/ittefaq.txt"))
     pprint.pprint(Evaluate(r"data/output/spell_test.pickle").get_evaluation())
+
+    # import gzip
+    #
+    # with gzip.open('data/oscar_corpus/bn_part_1.txt.gz', 'rt') as f:
+    #     for line in f:
+    #         print('got line', line)
+
+
+    path = '/home/sand/Projects/spell_checker/data/oscar_corpus'
+    # dict_MUL = corpora.Dictionary(prune_at=2000000)
+    # for i in ReadGzipFiles(path):
+    #     # print(i)
+    #     dict_MUL.add_documents([i])
+    # dict_MUL.filter_extremes(no_below=10, keep_n=1000000)
+    # # print(dict_MUL.token2id)
+    # dict_MUL.save_as_text("data/output/dictionary.txt")
+    # ReadGzipFiles(path).call()
+    # ReadGzipFiles(path).merge_dictionary(dictionary_paths=["bn_part_1.txt.gz_dictionary.txt",
+    #                                                        "bn_part_6.txt.gz_dictionary.txt",
+    #                                                        "bn_part_3.txt.gz_dictionary.txt",
+    #                                                        "bn_part_4.txt.gz_dictionary.txt",
+    #                                                        "bn_part_5.txt.gz_dictionary.txt",
+    #                                                        "bn_part_2.txt.gz_dictionary.txt"])
+
+    # a = list("‍্য")
+    # print(a)
+    # for i in a:
+    #     print(ord(i))
+    # print(ord("‍্য"))
+    # print(SpellChecker().get_word("‍উপর"))
+    # print(SpellChecker().get_word("‍উsর"))
+    # SpellChecker().iter_dict()
+
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

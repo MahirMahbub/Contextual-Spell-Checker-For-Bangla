@@ -1,3 +1,4 @@
+import difflib
 from typing import List, Dict, Any
 
 from source.data_classes import DatasetWordDetails
@@ -19,13 +20,14 @@ class Evaluate(object):
                        "TP": [], "FN": [],
                        "FP": [], "TN": [],
                        "TN_plus": []}
-        for data_point in self._object.dataset[0:10]:
+        for data_point in self._object.dataset[0:50]:
             # print(data_point)
             error_sentence: List[str] = data_point.error_sentence.copy()
             # print(error_sentence)
             correct_sentence: List[str] = data_point.sentence
             data_details: List[DatasetWordDetails] = data_point.data_details
-            corrected_sentence: List[str] = self._spell_checker_object.prediction(sentence=data_point.error_sentence, k=100,
+            corrected_sentence: List[str] = self._spell_checker_object.prediction(sentence=data_point.error_sentence,
+                                                                                  k=100,
                                                                                   levenshtein_ratio_threshold=0.5)
             tp, fp, tn, fn, tn_plus = 0, 0, 0, 0, 0
             # print(corrected_sentence, error_sentence)
@@ -46,7 +48,8 @@ class Evaluate(object):
                     # That mean the correct word in incorrectly manipulated in dataset
                     else:
                         fn += 1
-                        # print(correct_sentence[index], error_sentence[index], corrected_sentence[index])
+                        # print(correct_sentence, correct_sentence[index], error_sentence[index], corrected_sentence[index])
+                        # print(list(correct_sentence[index]), list(corrected_sentence[index]))
                 else:
                     if error_sentence[index] == corrected_sentence[index]:
                         fp += 1
@@ -65,5 +68,6 @@ class Evaluate(object):
             result_dict["FN"].append(fn)
             result_dict["FP"].append(fp)
             result_dict["TN_plus"].append(tn_plus)
-        JsonIO.write_json_from_dict(r"data/output/spell_evaluation_ner.json", result_dict)
+        JsonIO.write_json_from_dict(
+            r"data/output/spell_evaluation_no_change_existing_vocab_from_big_dict_and_vocab_with_distance_no_ratio.json", result_dict)
         return result_dict

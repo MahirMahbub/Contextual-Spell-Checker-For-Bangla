@@ -1,5 +1,6 @@
 from typing import List, Optional, Union
 
+from gensim import corpora
 from transformers import BertTokenizer
 
 from source.data_classes import MaskedModelPrediction, NERModelPrediction
@@ -13,6 +14,7 @@ class SpellChecker(NERPredictor, MaskedPredictor):
         MaskedPredictor.__init__(self, **kwargs)
         self.__levenshtein_object = Levenshtein()
         self.__tokenizer: BertTokenizer = BertTokenizer.from_pretrained("model/bangla-bert-base")
+        self.dict_ = corpora.Dictionary.load_from_text("data/output/" + "final_dictionary.txt").token2id
 
     def prediction(self, sentence: List[str], k: Optional[int] = 10,
                    levenshtein_ratio_threshold: Optional[float] = 0.5) -> List[str]:
@@ -48,7 +50,8 @@ class SpellChecker(NERPredictor, MaskedPredictor):
         return sentence
 
     def __is_vocab_in_tokenizer(self, word: str) -> Union[int, bool]:
-        return self.__tokenizer.get_vocab().get(word, False)
+        # return self.__tokenizer.get_vocab().get(word, False)
+        return self.__get_word(word) or self.__tokenizer.get_vocab().get(word, False)
 
     @staticmethod
     def __mirror_predicted_to_masked(predicted_sentence_list: List[str], masked_sentence_list: List[str]) -> List[str]:
@@ -72,6 +75,7 @@ class SpellChecker(NERPredictor, MaskedPredictor):
                            masked_sentence: List[str],
                            k: int) -> str:
         max_ratio: float = 0.0
+        min_distance: int = 100
         # max_distance = 0.0
         final_predicted_word_: str = final_predicted_word
         word_prediction_object_list: List[MaskedModelPrediction] = self._get_masked_prediction(k, masked_sentence)
@@ -85,34 +89,47 @@ class SpellChecker(NERPredictor, MaskedPredictor):
                 final_predicted_word_ = initial_predicted_word_
                 break
             if self.__is_vocab_in_tokenizer(main_word):
+                ######
+                final_predicted_word_ = main_word
+                break
+                ######
                 # print("In Vocab ", main_word)
-                if self.__get_is_in_top_ten(predicted_word_list=top_ten_predicted_list,
-                                            word=main_word,
-                                            ratio_threshold=ratio_threshold):
-                    # print(top_ten_predicted_list)
-                    final_predicted_word_ = self.__get_is_in_top_ten(predicted_word_list=top_ten_predicted_list,
-                                                                     word=main_word,
-                                                                     ratio_threshold=ratio_threshold)
-                    break
-
-                else:
-                    final_predicted_word_ = main_word
-                    break
+                # if self.__get_is_in_top_ten(predicted_word_list=top_ten_predicted_list,
+                #                             word=main_word,
+                #                             ratio_threshold=ratio_threshold):
+                #     # print(top_ten_predicted_list)
+                #     final_predicted_word_ = self.__get_is_in_top_ten(predicted_word_list=top_ten_predicted_list,
+                #                                                      word=main_word,
+                #                                                      ratio_threshold=ratio_threshold)
+                #     break
+                #
+                # else:
+                #     final_predicted_word_ = main_word
+                #     break
             if self.__is_numerical(main_word):
                 # print("Numerical ", main_word)
                 final_predicted_word_ = main_word
                 break
 
-            ratio = self.__get_levenshtein_ratio(main_word, initial_predicted_word_)
+            # ratio = self.__get_levenshtein_ratio(main_word, initial_predicted_word_)
+            ratio=None
             distance = self.__get_levenshtein_distance(main_word, initial_predicted_word_)
             if self.__is_eligible_predicted_word(current_ratio=ratio,
                                                  max_ratio=max_ratio,
                                                  ratio_threshold=ratio_threshold,
                                                  distance=distance,
-                                                 main_word = main_word) \
+                                                 main_word=main_word,
+                                                 min_distance=min_distance) \
                     and self.__is_vocab_in_tokenizer(initial_predicted_word_):
+                ##########Change based on Ratio#############
+                # final_predicted_word_ = initial_predicted_word_
+                # max_ratio = ratio
+                ###########################################
+                ##########Change based on distance#############
                 final_predicted_word_ = initial_predicted_word_
-                max_ratio = ratio
+                min_distance = distance
+                ###########################################
+
             # print(main_word, initial_predicted_word_, ratio, distance)
         return final_predicted_word_
 
@@ -133,7 +150,7 @@ class SpellChecker(NERPredictor, MaskedPredictor):
         max_ratio: float = 0.0
         for predicted_word in predicted_word_list:
             predicted_word_ = self.__get_predicted_word_from_object(predicted_word=predicted_word, main_word=word)
-            if predicted_word[0:2] =="##" and self.__is_vocab_in_tokenizer(predicted_word_):
+            if predicted_word[0:2] == "##" and self.__is_vocab_in_tokenizer(predicted_word_):
                 predicted_word_ = predicted_word
             ratio: float = self.__get_levenshtein_ratio(word=word, predicted_word=predicted_word_)
             distance: int = self.__get_levenshtein_distance(word=word, predicted_word=predicted_word_)
@@ -157,19 +174,32 @@ class SpellChecker(NERPredictor, MaskedPredictor):
         return word.isnumeric()
 
     @staticmethod
-    def __is_eligible_predicted_word(current_ratio: float, max_ratio: float, ratio_threshold: float,main_word: str,
-                                     distance: int = None) -> bool:
+    def __is_eligible_predicted_word(*, current_ratio: float = None,
+                                     max_ratio: float = None,
+                                     ratio_threshold: float,
+                                     main_word: str,
+                                     distance: int = None,
+                                     min_distance=None) -> bool:
         if distance is None:
             return True if current_ratio >= max_ratio and current_ratio >= ratio_threshold \
                 else False
-        else:
-            if len(main_word)>6:
+        elif distance is not None and current_ratio is not None:
+            if len(main_word) > 6:
                 # print(len(main_word), main_word)
                 return True if current_ratio >= max_ratio and distance <= 3 \
                     else False
             else:
                 # print(len(main_word), main_word)
                 return True if current_ratio >= max_ratio and distance <= 2 \
+                    else False
+        elif distance is not None and current_ratio is None:
+            if len(main_word) > 6:
+                # print(len(main_word), main_word)
+                return True if distance < min_distance and distance <= 3 \
+                    else False
+            else:
+                # print(len(main_word), main_word)
+                return True if distance < min_distance and distance <= 2 \
                     else False
 
     @staticmethod
@@ -198,3 +228,10 @@ class SpellChecker(NERPredictor, MaskedPredictor):
             masked[i] = "[MASK]"
             masked_sentences.append(masked)
         return masked_sentences
+
+    def __get_word(self, key):
+        return key in self.dict_
+
+    def __iter_dict(self):
+        for k, v in self.dict_.token2id.items():
+            print(k, v)
