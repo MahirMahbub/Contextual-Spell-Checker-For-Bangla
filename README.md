@@ -21,15 +21,15 @@
 from source.spell_checker import SpellChecker
 
 sentence = "আগুনে কমক্ষে ৩৮ জন দগ্ধ হয়েছ".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=50, levenshtein_ratio_threshold=0.5)))
+print(SpellChecker().prediction(sentence=sentence, k=50)))
 >>> ['আগুনে', 'কমপক্ষে', '৩৮', 'জন', 'দগ্ধ', 'হয়েছে']
 
 sentence = "এক এলাকা সোলতা আহমেদের ছে আব্দুর রহমান (৩০)".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=50, levenshtein_ratio_threshold=0.5)))
+print(SpellChecker().prediction(sentence=sentence, k=50)))
 >>>['একই', 'এলাকার', 'সোলতা', 'আহমেদের', 'ছেলে', 'আব্দুর', 'রহমান', '(৩০)']
 
 sentence = "পরে ডাকাতরা তাদসের উিপর হামলা করে এলোপাতাড়ি কুপাতে থাকেন"
-print(SpellChecker().prediction(sentence=sentence, k=50, levenshtein_ratio_threshold=0.5)))
+print(SpellChecker().prediction(sentence=sentence, k=50)))
 >>>['পরে', 'ডাকাতরা', 'তাদের', 'উপর', 'হামলা', 'করে', 'এলোপাতাড়ি', 'কুপাতে', 'থাকেন' ]
 
 
