@@ -32,6 +32,7 @@ class SpellChecker(NERPredictor, MaskedPredictor):
         """
 
         __ner_prediction: List[NERModelPrediction] = self._get_ner_prediction(sentence + ["।"])
+        # print(__ner_prediction)
         __masked_sentences: List[List[str]] = self.__create_mask(sentence)
         for index, masked_sentence in enumerate(__masked_sentences):
             if not self.__is_name_entity(__ner_prediction, index) or True:
@@ -49,9 +50,11 @@ class SpellChecker(NERPredictor, MaskedPredictor):
                 # print(sentence)
         return sentence
 
-    def __is_vocab_in_tokenizer(self, word: str) -> Union[int, bool]:
+    def __is_vocab_in_tokenizer(self, word_: str) -> Union[int, bool]:
         # return self.__tokenizer.get_vocab().get(word, False)
-        return self.__get_word(word) or self.__tokenizer.get_vocab().get(word, False)
+        res = self.__get_word(word_) or self.__tokenizer.get_vocab().get(word_, False)
+        # print("Predicted: ", word_, res)
+        return res
 
     @staticmethod
     def __mirror_predicted_to_masked(predicted_sentence_list: List[str], masked_sentence_list: List[str]) -> List[str]:
@@ -79,8 +82,10 @@ class SpellChecker(NERPredictor, MaskedPredictor):
         # max_distance = 0.0
         final_predicted_word_: str = final_predicted_word
         word_prediction_object_list: List[MaskedModelPrediction] = self._get_masked_prediction(k, masked_sentence)
+
         top_ten_predicted_list: List[str] = [word_prediction_object.prediction for word_prediction_object in
                                              word_prediction_object_list[0:10]]
+        # print(top_ten_predicted_list, final_predicted_word_)
         for word_prediction_object in word_prediction_object_list:
             predicted_word: str = word_prediction_object.prediction
             initial_predicted_word_ = self.__get_predicted_word_from_object(main_word, predicted_word)
@@ -90,6 +95,7 @@ class SpellChecker(NERPredictor, MaskedPredictor):
                 break
             if self.__is_vocab_in_tokenizer(main_word):
                 ######
+                # print("Found: ", main_word)
                 final_predicted_word_ = main_word
                 break
                 ######
@@ -112,15 +118,24 @@ class SpellChecker(NERPredictor, MaskedPredictor):
                 break
 
             # ratio = self.__get_levenshtein_ratio(main_word, initial_predicted_word_)
-            ratio=None
+            ratio = None
             distance = self.__get_levenshtein_distance(main_word, initial_predicted_word_)
-            if self.__is_eligible_predicted_word(current_ratio=ratio,
-                                                 max_ratio=max_ratio,
-                                                 ratio_threshold=ratio_threshold,
-                                                 distance=distance,
-                                                 main_word=main_word,
-                                                 min_distance=min_distance) \
-                    and self.__is_vocab_in_tokenizer(initial_predicted_word_):
+            # print(main_word, initial_predicted_word_, distance, len(main_word))
+            has_complex = False
+            temp_predicted_word = initial_predicted_word_
+            if "্" in list(temp_predicted_word):
+                has_complex = True
+            # print(temp_predicted_word)
+            if self.__is_vocab_in_tokenizer(word_=temp_predicted_word) and \
+                    self.__is_eligible_predicted_word(current_ratio=ratio,
+                                                      max_ratio=max_ratio,
+                                                      ratio_threshold=ratio_threshold,
+                                                      distance=distance,
+                                                      main_word=main_word,
+                                                      min_distance=min_distance,
+                                                      has_complex=has_complex):
+                # and :
+                # print(temp_predicted_word)
                 ##########Change based on Ratio#############
                 # final_predicted_word_ = initial_predicted_word_
                 # max_ratio = ratio
@@ -179,28 +194,46 @@ class SpellChecker(NERPredictor, MaskedPredictor):
                                      ratio_threshold: float,
                                      main_word: str,
                                      distance: int = None,
-                                     min_distance=None) -> bool:
+                                     min_distance=None,
+                                     has_complex: bool = False) -> bool:
+        complex = 0
+        if has_complex:
+            complex=1
         if distance is None:
             return True if current_ratio >= max_ratio and current_ratio >= ratio_threshold \
                 else False
         elif distance is not None and current_ratio is not None:
-            if len(main_word) > 6:
+            if len(main_word) < 4:
                 # print(len(main_word), main_word)
-                return True if current_ratio >= max_ratio and distance <= 3 \
+
+                return True if current_ratio >= max_ratio and distance <= 2+complex \
                     else False
-            else:
-                # print(len(main_word), main_word)
-                return True if current_ratio >= max_ratio and distance <= 2 \
-                    else False
+            return True if current_ratio >= max_ratio and distance <= (len(main_word) // 2)+complex \
+                else False
+            # if len(main_word) > 6:
+            #     # print(len(main_word), main_word)
+            #
+            #     return True if current_ratio >= max_ratio and distance <= 3 \
+            #         else False
+            # else:
+            #     # print(len(main_word), main_word)
+            #     return True if current_ratio >= max_ratio and distance <= 2 \
+            #         else False
         elif distance is not None and current_ratio is None:
-            if len(main_word) > 6:
+            if len(main_word) < 4:
                 # print(len(main_word), main_word)
-                return True if distance < min_distance and distance <= 3 \
+                return True if distance < min_distance and distance <= 2+complex \
                     else False
-            else:
-                # print(len(main_word), main_word)
-                return True if distance < min_distance and distance <= 2 \
-                    else False
+            return True if distance < min_distance and distance <= (len(main_word) // 2)+complex \
+                else False
+            # if len(main_word) > 6:
+            #     # print(len(main_word), main_word)
+            #     return True if distance < min_distance and distance <= 3 \
+            #         else False
+            # else:
+            #     # print(len(main_word), main_word)
+            #     return True if distance < min_distance and distance <= 2 \
+            #         else False
 
     @staticmethod
     def __is_exact_match(word: str, predicted_word: str) -> bool:
