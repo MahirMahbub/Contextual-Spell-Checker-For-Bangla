@@ -49,11 +49,14 @@ Evaluation dataset in created from https://github.com/habibsifat/Algorithm-for-B
 
 **FP:** Did not change the incorrect word (Mark incorrect as correct) / total incorrect word.
 
-**TN:** Change the incorrect word correctly / total correct word.
+**TN:** Change the incorrect word correctly / total incorrect word.
 
 **TN_PLUS:** Change the incorrect word incorrectly.
             
+<!-- | Model      | Top N| TP | FN | FP | TN | TN_PLUS |
+| :----------- | :----------- | :----------- | :----------- | :----------- | :----------- | :------------ |
+| Sagor Sarkar | 100 | 0.9837 | 0.0163| 0.6786 | 0.3214 | 0.0000 | -->
+            
 | Model      | Top N| TP | FN | FP | TN | TN_PLUS |
 | :----------- | :----------- | :----------- | :----------- | :----------- | :----------- | :------------ |
-| Sagor Sarkar | 100 | 0.9837 | 0.0163| 0.6786 | 0.3214 | 0.0000 |
-            
+| Sagor Sarkar | 100 | 0.9782 | 0.0144| 0.4167 | 0.500 | 0.0833 | -->
