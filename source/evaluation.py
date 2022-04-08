@@ -20,14 +20,14 @@ class Evaluate(object):
                        "TP": [], "FN": [],
                        "FP": [], "TN": [],
                        "TN_plus": []}
-        for data_point in self._object.dataset[0:20]:
+        for data_point in self._object.dataset:
             # print(data_point)
             error_sentence: List[str] = data_point.error_sentence.copy()
             # print(error_sentence)
             correct_sentence: List[str] = data_point.sentence
             data_details: List[DatasetWordDetails] = data_point.data_details
             corrected_sentence: List[str] = self._spell_checker_object.prediction(sentence=data_point.error_sentence,
-                                                                                  k=50,
+                                                                                  k=200,
                                                                                   levenshtein_ratio_threshold=0.5)
             tp, fp, tn, fn, tn_plus = 0, 0, 0, 0, 0
             # print(corrected_sentence, error_sentence)
@@ -68,6 +68,6 @@ class Evaluate(object):
             result_dict["FN"].append(fn)
             result_dict["FP"].append(fp)
             result_dict["TN_plus"].append(tn_plus)
-        # JsonIO.write_json_from_dict(
-        #     r"data/output/spell_evaluation_no_change_existing_vocab_from_big_dict_and_vocab_with_distance_no_ratio_in top_50.json", result_dict)
+        JsonIO.write_json_from_dict(
+            r"data/output/spell_evaluation_in top_200.json", result_dict)
         return result_dict

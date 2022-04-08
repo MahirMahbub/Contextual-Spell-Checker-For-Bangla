@@ -29,12 +29,12 @@ if __name__ == '__main__':
     # sentence = ['এতে', 'তাপমাটরা', 'সামােন', 'কমাতে', 'পারে']
     sentence = "তাূরা দেখেন ঢাকার দূই সিটি করপোরেশনে মশা মারতে যে ওষধূ ছিটানো হয় তা অকাযংকর".split(" ")
     # Ans: ['তারা', 'দেখেন', 'ঢাকার', 'দুই', 'সিটি', 'করপোরেশনে', 'মশা', 'মারতে', 'যে', 'ওষুধ', 'ছিটানো', 'হয়', 'তা', 'অকাযংকর']
-    sentence = "২০ ১৫ সালের নভেম্বরে প্রান্সের প্যারিসে অনিূছত জলবায়ূ সসেলনে বিশেব ২০০ দেশ অংশ নেয়".split(" ")
+    # sentence = "২০ ১৫ সালের নভেম্বরে প্রান্সের প্যারিসে অনিূছত জলবায়ূ সসেলনে বিশেব ২০০ দেশ অংশ নেয়".split(" ")
     # sentence = "এটি আরো ঘজণীভূত হতে পারে".split(" ")
     # sentence = ['পুলিশ', 'আসার', 'আগে', 'ডাকাত', 'পালিয়ে', 'গেছে']
     # sentence = ['আমি','বাংলায়' , 'জ্ঞান', 'গাই']
     # sentence = "পরে সেখগান থেকে আগুনেরে অপসারিত হই এবং তা চারদসিকে ছড়িয়ুে পারে".split(" ")
-    print(SpellChecker().prediction(sentence=sentence, k=200, levenshtein_ratio_threshold=0.5))
+    # print(SpellChecker().prediction(sentence=sentence, k=200, levenshtein_ratio_threshold=0.5))
 
     # #
     # ner_word_track = TestDatasetCreationHandler().make_dataset(path=r"data/output/ittefaq.txt", length=5000)
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     # sen_list = PickleReader().read_pickle(r"data/input/ittefaq.pkl", True)
     # TextIO.write_text(r"data/output/ittefaq.txt", sen_list)
     # print(TextIO.read_text(r"data/output/ittefaq.txt"))
-    # pprint.pprint(Evaluate(r"data/output/spell_test.pickle").get_evaluation())
+    pprint.pprint(Evaluate(r"data/output/spell_test.pickle").get_evaluation())
 
     # import gzip
     #
