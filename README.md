@@ -21,18 +21,20 @@
 from source.spell_checker import SpellChecker
 
 sentence = "আগুনে কমক্ষে ৩৮ জন দগ্ধ হয়েছ".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=50)))
+print(SpellChecker().prediction(sentence=sentence, k=100)))
 >>> ['আগুনে', 'কমপক্ষে', '৩৮', 'জন', 'দগ্ধ', 'হয়েছে']
 
 sentence = "এক এলাকা সোলতা আহমেদের ছে আব্দুর রহমান (৩০)".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=50)))
+print(SpellChecker().prediction(sentence=sentence, k=100)))
 >>>['একই', 'এলাকার', 'সোলতা', 'আহমেদের', 'ছেলে', 'আব্দুর', 'রহমান', '(৩০)']
 
 sentence = "পরে ডাকাতরা তাদসের উিপর হামলা করে এলোপাতাড়ি কুপাতে থাকেন"
-print(SpellChecker().prediction(sentence=sentence, k=50)))
+print(SpellChecker().prediction(sentence=sentence, k=100)))
 >>>['পরে', 'ডাকাতরা', 'তাদের', 'উপর', 'হামলা', 'করে', 'এলোপাতাড়ি', 'কুপাতে', 'থাকেন' ]
 
-
+sentence = "তাূরা দেখেন ঢাকার দূই সিটি করপোরেশনে মশা মারতে যে ওষধূ ছিটানো হয় তা অকাযংকর"
+print(SpellChecker().prediction(sentence=sentence, k=100)))
+>>>['তারা', 'দেখেন', 'ঢাকার', 'দুই', 'সিটি', 'করপোরেশনে', 'মশা', 'মারতে', 'যে', 'ওষুধ', 'ছিটানো', 'হয়', 'তা', 'অকাযংকর']
 
 ```
 
