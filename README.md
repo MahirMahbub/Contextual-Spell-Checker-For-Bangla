@@ -6,7 +6,7 @@
 
 - Bert NER Model (Added)
 - Levenshtein Distance (Added)
-- Dictionary Look up (Added)
+- Dictionary Look up (Added), 451742 unique words from Oscar 2019 dataset.
 - Progressive spell checking with NER (Added)
 - New constraints added while checking the spelling (Added)
 
@@ -14,6 +14,7 @@
 - Download a Bert Masked Model in "model/bangla-bert-base" (Recommeded https://huggingface.co/sagorsarker/bangla-bert-base)
 - Download a Bert NER Model in "model/mbert-bengali-ner" (Recommended https://huggingface.co/sagorsarker/mbert-bengali-ner)
 - Specify the Bert Masked Model and Bert NER Model controller class name in "config.json" 
+- [Download](https://drive.google.com/file/d/1Z98rG7CSvnHFUSOAZ0jtWCCAYf_nBde0/view?usp=sharing) dictionary and place in at /data/output/
 
 **Example**:
 
