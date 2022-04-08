@@ -6,7 +6,7 @@
 
 - Bert NER Model (Added)
 - Levenshtein Distance (Added)
-- Dictionary Look up (Added)
+- Dictionary Look up (Added), 451742 unique words from Oscar 2019 dataset.
 - Progressive spell checking with NER (Added)
 - New constraints added while checking the spelling (Added)
 
@@ -14,6 +14,7 @@
 - Download a Bert Masked Model in "model/bangla-bert-base" (Recommeded https://huggingface.co/sagorsarker/bangla-bert-base)
 - Download a Bert NER Model in "model/mbert-bengali-ner" (Recommended https://huggingface.co/sagorsarker/mbert-bengali-ner)
 - Specify the Bert Masked Model and Bert NER Model controller class name in "config.json" 
+- [Download](https://drive.google.com/file/d/1Z98rG7CSvnHFUSOAZ0jtWCCAYf_nBde0/view?usp=sharing) dictionary and place in at /data/output/
 
 **Example**:
 
@@ -21,18 +22,20 @@
 from source.spell_checker import SpellChecker
 
 sentence = "আগুনে কমক্ষে ৩৮ জন দগ্ধ হয়েছ".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=50)))
+print(SpellChecker().prediction(sentence=sentence, k=100)))
 >>> ['আগুনে', 'কমপক্ষে', '৩৮', 'জন', 'দগ্ধ', 'হয়েছে']
 
 sentence = "এক এলাকা সোলতা আহমেদের ছে আব্দুর রহমান (৩০)".split(" ")
-print(SpellChecker().prediction(sentence=sentence, k=50)))
+print(SpellChecker().prediction(sentence=sentence, k=100)))
 >>>['একই', 'এলাকার', 'সোলতা', 'আহমেদের', 'ছেলে', 'আব্দুর', 'রহমান', '(৩০)']
 
 sentence = "পরে ডাকাতরা তাদসের উিপর হামলা করে এলোপাতাড়ি কুপাতে থাকেন"
-print(SpellChecker().prediction(sentence=sentence, k=50)))
+print(SpellChecker().prediction(sentence=sentence, k=100)))
 >>>['পরে', 'ডাকাতরা', 'তাদের', 'উপর', 'হামলা', 'করে', 'এলোপাতাড়ি', 'কুপাতে', 'থাকেন' ]
 
-
+sentence = "তাূরা দেখেন ঢাকার দূই সিটি করপোরেশনে মশা মারতে যে ওষধূ ছিটানো হয় তা অকাযংকর"
+print(SpellChecker().prediction(sentence=sentence, k=100)))
+>>>['তারা', 'দেখেন', 'ঢাকার', 'দুই', 'সিটি', 'করপোরেশনে', 'মশা', 'মারতে', 'যে', 'ওষুধ', 'ছিটানো', 'হয়', 'তা', 'অকাযংকর']
 
 ```
 
@@ -46,11 +49,14 @@ Evaluation dataset in created from https://github.com/habibsifat/Algorithm-for-B
 
 **FP:** Did not change the incorrect word (Mark incorrect as correct) / total incorrect word.
 
-**TN:** Change the incorrect word correctly / total correct word.
+**TN:** Change the incorrect word correctly / total incorrect word.
 
 **TN_PLUS:** Change the incorrect word incorrectly.
             
+<!-- | Model      | Top N| TP | FN | FP | TN | TN_PLUS |
+| :----------- | :----------- | :----------- | :----------- | :----------- | :----------- | :------------ |
+| Sagor Sarkar | 100 | 0.9837 | 0.0163| 0.6786 | 0.3214 | 0.0000 | -->
+            
 | Model      | Top N| TP | FN | FP | TN | TN_PLUS |
 | :----------- | :----------- | :----------- | :----------- | :----------- | :----------- | :------------ |
-| Sagor Sarkar | 100 | 0.9837 | 0.0163| 0.6786 | 0.3214 | 0.0000 |
-            
+| Sagor Sarkar | 100 | 0.9782 | 0.0144| 0.4150 | 0.5017 | 0.0833 | -->
