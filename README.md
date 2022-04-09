@@ -15,6 +15,7 @@
 - Download a Bert NER Model in "model/mbert-bengali-ner" (Recommended https://huggingface.co/sagorsarker/mbert-bengali-ner)
 - Specify the Bert Masked Model and Bert NER Model controller class name in "config.json" 
 - [Download](https://drive.google.com/file/d/1Z98rG7CSvnHFUSOAZ0jtWCCAYf_nBde0/view?usp=sharing) dictionary and place in at /data/output/
+- Run app.py for API(Based of Fastapi)
 
 **Example**:
 
