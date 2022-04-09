@@ -61,3 +61,11 @@ Evaluation dataset in created from https://github.com/habibsifat/Algorithm-for-B
 | Model      | Top N| TP | FN | FP | TN | TN_PLUS |
 | :----------- | :----------- | :----------- | :----------- | :----------- | :----------- | :------------ |
 | Sagor Sarkar | 100 | 0.9782 | 0.0144| 0.4150 | 0.5017 | 0.0833 | -->
+
+
+## API
+We also added API. Here is the API response.
+
+![api](https://github.com/MahirMahbub/Contextual-Spell-Checker-For-Bangla/blob/master/api.png)
+
+
