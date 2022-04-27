@@ -60,7 +60,9 @@ Evaluation dataset in created from https://github.com/habibsifat/Algorithm-for-B
             
 | Model      | Top N| TP | FN | FP | TN | TN_PLUS |
 | :----------- | :----------- | :----------- | :----------- | :----------- | :----------- | :------------ |
-| Sagor Sarkar | 100 | 0.9782 | 0.0218| 0.4150 | 0.5017 | 0.0833 | -->
+| Sagor Sarkar | 50 | 0.9782 | 0.0218 | 0.4150 | 0.5017 | 0.0833 | -->
+| NWP(W2V Skipgram)| 50 | 0.9879 | 0.0121 | 0.6612 | 0.2825 | 0.0563 | -->
+
 
 
 ## API
