@@ -53,15 +53,34 @@ Evaluation dataset in created from https://github.com/habibsifat/Algorithm-for-B
 **TN:** Change the incorrect word correctly / total incorrect word.
 
 **TN_PLUS:** Change the incorrect word incorrectly.
+
+### Result of bangla bert for different language models
             
-<!-- | Model      | Top N| TP | FN | FP | TN | TN_PLUS |
-| :----------- | :----------- | :----------- | :----------- | :----------- | :----------- | :------------ |
-| Sagor Sarkar | 100 | 0.9837 | 0.0163| 0.6786 | 0.3214 | 0.0000 | -->
-            
-| Model      | Top N| TP | FN | FP | TN | TN_PLUS |
+| Model | Top N| TP | FN | FP | TN | TN_PLUS |
 | :----------- | :----------- | :----------- | :----------- | :----------- | :----------- | :------------ |
 | Sagor Sarkar | 50 | 0.9782 | 0.0218 | 0.4150 | 0.5017 | 0.0833 | -->
 | NWP(W2V Skipgram)| 50 | 0.9879 | 0.0121 | 0.6612 | 0.2825 | 0.0563 | -->
+
+
+
+### The result of spell checker based on bangla bert for different conditions
+
+We conducted the experiment on different value of maximum edit distance (ml). The conditions are given below:
+
+• **C1:** ml = Probable misspell word(mw)’s length//2.
+
+• **C2:** ml = mw’s length//2 if mw’s length > 4 else ml = 2.
+
+• **C3:** ml = mw’s length//2 if mw’s length > 6 else ml = 2.
+
+• **C4:** ml = mw’s length//2 if mw’s length > 6 else ml = 3
+
+| Condition | TP | FN | FP | TN | TN_PLUS |
+| :----------- | :----------- | :----------- | :----------- | :----------- | :----------- |
+| C1 | 0.9837 | 0.0163 | 0.6779 | 0.3209 | 0.0012 |
+| C2 | 0.9782 | 0.0218 | 0.4150 | 0.5017 | 0.0833 |
+| C3 | 0.9776 | 0.0224 | 0.5534 | 0.4410 | 0.0056 |
+| C4 | 0.9623 | 0.0377 | 0.6498 | 0.2010 | 0.1492 |
 
 
 
