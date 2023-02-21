@@ -85,8 +85,6 @@ We conducted the experiment on different value of maximum edit distance (ml). Th
 
 
 ## API
-We also added API. Here is the API response.
-
-![api](https://github.com/MahirMahbub/Contextual-Spell-Checker-For-Bangla/blob/master/api.png)
+We also added API.
 
 
