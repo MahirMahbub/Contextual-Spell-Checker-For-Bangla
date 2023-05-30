@@ -17,7 +17,7 @@ class Sentence(BaseModel):
 
 
 class SpellCheckerInnerResponse(CamelModel):
-    sentence: str
+    # sentence: str
     correction: str
 
 
@@ -30,10 +30,10 @@ async def spell_checker(sentences: Sentence):
     response = []
     try:
         for sentence in sentences.sentences:
-            corrected_sentence = spell_checker_handler.prediction(sentence=sentence.split(" "), k=200,
+            corrected_sentence = spell_checker_handler.prediction(sentence=sentence.split(" "), k=100,
                                                                   levenshtein_ratio_threshold=0.5)
             response.append({
-                "sentence": sentence,
+                # "sentence": sentence,
                 "correction": " ".join(corrected_sentence)
             })
     except Exception as e:

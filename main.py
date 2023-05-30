@@ -20,14 +20,16 @@ from source.text_io import TextIO
 
 if __name__ == '__main__':
     # sentence = "পুলিশ আসা আগে ডাকাত পালিয়ে গোছে".split(" ")
+    # sentence= "আমি বাংলায় গান গায়".split(" ")
     # sentence = "আগুনে কমক্ষে ৩৮ জন দগ্ধ হয়েছ".split(" ")
     # sentence = "এক এলাকা সোলতা আহমেদের ছে আব্দুর রহমান (৩০)".split(" ")
     # sentence = "এখান লাঠিয়াল, ঢুলি, পালকিবাহক বা পেয়াদাগিরির পেশ বেছে নিতে হয়".split(" ")
     # sentence = "২. ভারতের ন্যায় বিড়ি শিল্পকে কুটির শিল্প ঘোষণা করা". split(" ")
     # print(sentence)
-    # sentence = "এটি আরো ঘজণীভূত হতে পারে".split(" ")
+    sentence = "এটি আরো ঘজণীভূত হতে পারে".split(" ")
     # sentence = ['এতে', 'তাপমাটরা', 'সামােন', 'কমাতে', 'পারে']
-    sentence = "তাূরা দেখেন ঢাকার দূই সিটি করপোরেশনে মশা মারতে যে ওষধূ ছিটানো হয় তা অকাযংকর".split(" ")
+    # sentence = "তাূরা দেখেন ঢাকার দূই সিটি করপোরেশনে মশা মারতে যে ওষধূ ছিটানো হয় তা অকাযংকর".split(" ")
+    print(SpellChecker().prediction(sentence=sentence, k=100))
     # Ans: ['তারা', 'দেখেন', 'ঢাকার', 'দুই', 'সিটি', 'করপোরেশনে', 'মশা', 'মারতে', 'যে', 'ওষুধ', 'ছিটানো', 'হয়', 'তা', 'অকাযংকর']
     # sentence = "২০ ১৫ সালের নভেম্বরে প্রান্সের প্যারিসে অনিূছত জলবায়ূ সসেলনে বিশেব ২০০ দেশ অংশ নেয়".split(" ")
     # sentence = "এটি আরো ঘজণীভূত হতে পারে".split(" ")
@@ -58,7 +60,7 @@ if __name__ == '__main__':
     # sen_list = PickleReader().read_pickle(r"data/input/ittefaq.pkl", True)
     # TextIO.write_text(r"data/output/ittefaq.txt", sen_list)
     # print(TextIO.read_text(r"data/output/ittefaq.txt"))
-    pprint.pprint(Evaluate(r"data/output/spell_test.pickle").get_evaluation())
+    # pprint.pprint(Evaluate(r"data/output/spell_test.pickle").get_evaluation())
 
     # import gzip
     #
