@@ -44,7 +44,7 @@ print(SpellChecker().prediction(sentence=sentence, k=100)))
 
 ```
 
-## Result
+## Result (Based on 1.0.2-alpha)
 
 Evaluation dataset in created from https://github.com/habibsifat/Algorithm-for-Bengali-Error-Dataset-Generation. 
 
