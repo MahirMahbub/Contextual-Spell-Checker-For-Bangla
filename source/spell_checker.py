@@ -30,7 +30,9 @@ class SpellChecker(NERPredictor, MaskedPredictor):
         :return a list of word of a sentence
         :rtype List[str]
         """
-
+        # Removing empty string (" ") from the list of words in a sentence
+        sentence = [item for item in sentence if item != '']
+                       
         __ner_prediction: List[NERModelPrediction] = self._get_ner_prediction(sentence + ["।"])
         # print(__ner_prediction)
         __masked_sentences: List[List[str]] = self.__create_mask(sentence)
